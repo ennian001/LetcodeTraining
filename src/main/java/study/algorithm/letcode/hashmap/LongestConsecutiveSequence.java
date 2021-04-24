@@ -1,8 +1,6 @@
-package study.letcode.hashmap;
+package study.algorithm.letcode.hashmap;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
  * @desc 最长连续子序列

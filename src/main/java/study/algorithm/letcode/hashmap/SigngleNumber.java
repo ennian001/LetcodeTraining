@@ -1,4 +1,4 @@
-package study.letcode.hashmap;
+package study.algorithm.letcode.hashmap;
 
 import java.util.ArrayList;
 import java.util.HashMap;

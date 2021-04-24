@@ -1,4 +1,4 @@
-package study.letcode.Snowflake.service;
+package study.algorithm.project.Snowflake.service;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.net.NetUtil;

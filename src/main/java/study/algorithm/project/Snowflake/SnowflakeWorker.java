@@ -1,4 +1,4 @@
-package study.letcode.Snowflake;
+package study.algorithm.project.Snowflake;
 
 import lombok.Data;
 
