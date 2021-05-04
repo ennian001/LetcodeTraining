@@ -7,12 +7,15 @@ public class MergeTwoSortedLists {
         //首先定义一个哨兵节点 ， 它的next指向最终结果的头节点
         ListNode sentinel = new ListNode(-1) ;
         //保存当前结果链表里的最后一个节点，作为判断比较的“前一个节点”
+        //还没有结果，指向哨兵节点
         ListNode prev = sentinel ;
         //迭代遍历两个链表 ， 直到至少有一个为null
         while (l1!=null && l2!=null){
-            //比较当前两个链表的头节点，较小的那个就在链表末尾
+            //比较当前两个链表的头节点，较小的那个就接在链表末尾
             if (l1.val<= l2.val){
+                //当前链表的节点，接到pre中 li头节点连接到pre后面
                 prev.next = l1 ;
+                //指针向前移动，以下一个节点作为链表头节点
                 prev = l1;
                 l1 = l1.next ;
             } else {
