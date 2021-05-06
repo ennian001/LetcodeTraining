@@ -1,6 +1,8 @@
 package study.algorithm.juc2021.cas;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicMarkableReference;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
 /**
@@ -10,6 +12,8 @@ public class ABADemo {
 
     static AtomicInteger atomicInteger = new AtomicInteger(100) ;
     static AtomicStampedReference atomicStampedReference = new AtomicStampedReference(100,1) ;
+
+    static AtomicMarkableReference<Integer> atomicMarkableReference  = new AtomicMarkableReference<>(100 , false)  ;
 
     public static void main(String[] args) {
         new Thread(()->{
@@ -45,6 +49,29 @@ public class ABADemo {
             boolean result = atomicStampedReference.compareAndSet(100,2019,stamp,stamp+1);
             System.out.println(Thread.currentThread().getName()+"\t"+result+"\t"+atomicStampedReference.getReference());
         },"t4").start();
+
+        System.out.println("=======================AtomicMarkableReference不关心修改过几次，只关心是否修改过==================");
+        new Thread(
+                ()->{
+                    boolean marked =  atomicMarkableReference.isMarked();
+                    System.out.println(Thread.currentThread().getName()+"\t"+"第一次版本号："+marked);
+                    try { TimeUnit.MILLISECONDS.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
+
+                    atomicMarkableReference.compareAndSet(100,101,marked,!marked) ;
+                    System.out.println(Thread.currentThread().getName()+"\t"+"第二次版本号："+marked);
+                    atomicMarkableReference.compareAndSet(101,100,marked,!marked) ;
+                    System.out.println(Thread.currentThread().getName()+"\t"+"第三次版本号："+marked);
+                }
+        ,"t5").start();
+
+        new Thread(()->{
+             boolean marked = atomicMarkableReference.isMarked();
+            System.out.println(Thread.currentThread().getName()+"\t"+"第一次修改版本号"+marked);
+            try { TimeUnit.MILLISECONDS.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
+            atomicMarkableReference.compareAndSet(100,2020,marked,!marked) ;
+            System.out.println(Thread.currentThread().getName()+"\t"+atomicMarkableReference.getReference()+"\t"+atomicMarkableReference.isMarked());
+        },"t6").start();
+
     }
 
 
